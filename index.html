@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="css/label.css" />
         <link rel="stylesheet" href="css/MarkerCluster.css" />
         <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+        <link rel="stylesheet" href="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.css" />
         <link rel="stylesheet" href="css/leaflet.draw.css" />
         <link rel="stylesheet" href="css/leaflet.measurecontrol.css" />
         <script src="js/leaflet.js"></script>
@@ -18,13 +19,16 @@
         <script src="js/leaflet-hash.js"></script>
         <script src="js/label.js"></script>
         <script src="js/Autolinker.min.js"></script>
+        <script src="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.js"></script>
         <script src="js/leaflet.draw.js"></script>
         <script src="js/leaflet.measurecontrol.js"></script>
         <script src="js/leaflet.markercluster.js"></script>
         <style>
-        #map {
-            width: 920px;
-            height: 720px;
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
         }
         </style>
         <title></title>
@@ -32,7 +36,7 @@
     <body>
         <div id="map">
         </div>
-        <script src="data/json_N0315081501010.js"></script>
+        <script src="data/json_0.js"></script>
         <script src="data/json_1.js"></script>
         <script src="data/json_2.js"></script>
         <script>
@@ -44,7 +48,7 @@
         var map = L.map('map', {
             measureControl:true,
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[35.8176088479,139.561610143],[36.4519285052,140.702146617]]);
+        }).fitBounds([[35.8697486548,139.603014403],[36.5029844755,140.516534932]]);
         var hash = new L.Hash(map);
         map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
         var feature_group = new L.featureGroup([]);
@@ -68,14 +72,14 @@
             }
         }
         layerControl = L.control.layers({},{},{collapsed:false});
-        function pop_N0315081501010(feature, layer) {
+        function pop_0(feature, layer) {
         }
 
-        function doStyleN0315081501010(feature) {
+        function doStyle0(feature) {
             return {
                 weight: 0.26,
-                color: '#000000',
-                fillColor: '#d6cd68',
+                color: '#afb38a',
+                fillColor: '#f1f4c7',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -83,13 +87,13 @@
                 fillOpacity: 1.0
             };
         }
-        var json_N0315081501010JSON = new L.geoJson(json_N0315081501010, {
-            onEachFeature: pop_N0315081501010,
-            style: doStyleN0315081501010
+        var json_0JSON = new L.geoJson(json_0, {
+            onEachFeature: pop_0,
+            style: doStyle0
         });
-        layerOrder[layerOrder.length] = json_N0315081501010JSON;
-        bounds_group.addLayer(json_N0315081501010JSON);
-        feature_group.addLayer(json_N0315081501010JSON);
+        layerOrder[layerOrder.length] = json_0JSON;
+        bounds_group.addLayer(json_0JSON);
+        feature_group.addLayer(json_0JSON);
         function pop_1(feature, layer) {
         }
 
@@ -111,11 +115,13 @@
         bounds_group.addLayer(json_1JSON);
         feature_group.addLayer(json_1JSON);
         function pop_2(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">N02_001</th><td>' + (feature.properties['N02_001'] !== null ? Autolinker.link(String(feature.properties['N02_001'])) : '') + '</td></tr><tr><th scope="row">N02_002</th><td>' + (feature.properties['N02_002'] !== null ? Autolinker.link(String(feature.properties['N02_002'])) : '') + '</td></tr><tr><th scope="row">N02_003</th><td>' + (feature.properties['N02_003'] !== null ? Autolinker.link(String(feature.properties['N02_003'])) : '') + '</td></tr><tr><th scope="row">N02_004</th><td>' + (feature.properties['N02_004'] !== null ? Autolinker.link(String(feature.properties['N02_004'])) : '') + '</td></tr><tr><th scope="row">N02_005</th><td>' + (feature.properties['N02_005'] !== null ? Autolinker.link(String(feature.properties['N02_005'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
         }
 
         function doStyle2(feature) {
             return {
-                weight: 3.44,
+                weight: 5.04,
                 color: '#484eff',
                 dashArray: '',
                 lineCap: 'round',
@@ -132,8 +138,14 @@
         feature_group.addLayer(json_2JSON);
         raster_group.addTo(map);
         feature_group.addTo(map);
+        var osmGeocoder = new L.Control.OSMGeocoder({
+            collapsed: false,
+            position: 'topright',
+            text: 'Search',
+        });
+        osmGeocoder.addTo(map);
         var baseMaps = {'OSM': basemap0};
-        L.control.layers(baseMaps,{'<img src="legend/2.png" /> 茨城県_駅': json_2JSON,'<img src="legend/1.png" /> 茨城県_路線': json_1JSON,'<img src="legend/N0315081501010.png" /> N03-15_08_150101': json_N0315081501010JSON,},{collapsed:false}).addTo(map);
+        L.control.layers(baseMaps,{'<img src="legend/2.png" /> 駅': json_2JSON,'<img src="legend/1.png" /> 路線': json_1JSON,'<img src="legend/0.png" /> 茨城県行政区画': json_0JSON,},{collapsed:false}).addTo(map);
         L.control.scale({options: {position: 'bottomleft', maxWidth: 100, metric: true, imperial: false, updateWhenIdle: false}}).addTo(map);
         stackLayers();
         map.on('overlayadd', restackLayers);
