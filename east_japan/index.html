@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/label.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+        <link rel="stylesheet" href="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.css" />
+        <link rel="stylesheet" href="css/leaflet.draw.css" />
+        <link rel="stylesheet" href="css/leaflet.measurecontrol.css" />
+        <script src="js/leaflet.js"></script>
+        <script src="js/OSMBuildings-Leaflet.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/label.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.js"></script>
+        <script src="js/leaflet.draw.js"></script>
+        <script src="js/leaflet.measurecontrol.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="data/json_0.js"></script>
+        <script src="data/json_1.js"></script>
+        <script>
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        var map = L.map('map', {
+            measureControl:true,
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[32.4241123087,132.742778746],[39.0214060725,142.260186143]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        var feature_group = new L.featureGroup([]);
+        var bounds_group = new L.featureGroup([]);
+        var raster_group = new L.LayerGroup([]);
+        var basemap0 = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 28
+        });
+        basemap0.addTo(map);
+        var layerOrder = new Array();
+        function stackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                map.removeLayer(layerOrder[index]);
+                map.addLayer(layerOrder[index]);
+            }
+        }
+        function restackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                layerOrder[index].bringToFront();
+            }
+        }
+        layerControl = L.control.layers({},{},{collapsed:false});
+        function pop_0(feature, layer) {
+        }
+
+        function doStyle0(feature) {
+            return {
+                weight: 2.8,
+                color: '#828282',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'round',
+                opacity: 1.0
+            };
+        }
+        var json_0JSON = new L.geoJson(json_0, {
+            onEachFeature: pop_0,
+            style: doStyle0
+        });
+        layerOrder[layerOrder.length] = json_0JSON;
+        bounds_group.addLayer(json_0JSON);
+        feature_group.addLayer(json_0JSON);
+        function pop_1(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">N02_005</th><td>' + (feature.properties['N02_005'] !== null ? Autolinker.link(String(feature.properties['N02_005'])) : '') + '</td></tr><tr><th scope="row">N02_005</th><td>' + (feature.properties['N02_005'] !== null ? Autolinker.link(String(feature.properties['N02_005'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyle1(feature) {
+            return {
+                weight: 7.44,
+                color: '#0072e4',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                opacity: 1.0
+            };
+        }
+        var json_1JSON = new L.geoJson(json_1, {
+            onEachFeature: pop_1,
+            style: doStyle1
+        });
+        layerOrder[layerOrder.length] = json_1JSON;
+        bounds_group.addLayer(json_1JSON);
+        feature_group.addLayer(json_1JSON);
+        raster_group.addTo(map);
+        feature_group.addTo(map);
+        var osmGeocoder = new L.Control.OSMGeocoder({
+            collapsed: false,
+            position: 'topright',
+            text: 'Search',
+        });
+        osmGeocoder.addTo(map);
+        var baseMaps = {'OSM': basemap0};
+        L.control.layers(baseMaps,{'<img src="legend/1.png" /> 駅': json_1JSON,'<img src="legend/0.png" /> 路線': json_0JSON,},{collapsed:false}).addTo(map);
+        L.control.scale({options: {position: 'bottomleft', maxWidth: 100, metric: true, imperial: false, updateWhenIdle: false}}).addTo(map);
+        stackLayers();
+        map.on('overlayadd', restackLayers);
+        </script>
+    </body>
+</html>
